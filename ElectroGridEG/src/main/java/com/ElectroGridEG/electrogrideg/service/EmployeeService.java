@@ -11,16 +11,16 @@ import com.google.gson.*;
 import org.jsoup.*;
 import org.jsoup.parser.*;
 import org.jsoup.nodes.Document;
-@Path("/Items")
+@Path("Items")
 public class EmployeeService
 {
 EmployeeDAO itemObj = new EmployeeDAO();
-@GET
-@Path("/")
-@Produces(MediaType.TEXT_HTML)
-public String readItems()
- {
- return "Hello";
- }
+		@GET
+		@Path("/")
+		@Produces(MediaType.TEXT_HTML)
+		public String readItems()
+   {
+        return itemObj.readItems();
+   }
 }
  
