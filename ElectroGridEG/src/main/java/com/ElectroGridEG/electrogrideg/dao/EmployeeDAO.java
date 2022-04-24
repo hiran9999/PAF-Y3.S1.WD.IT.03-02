@@ -27,15 +27,15 @@ public class EmployeeDAO
 				 {return "Error while connecting to the database for inserting."; }
 				 // create a prepared statement
 				 String query = " insert into employee (`id`,`empNo`,`empName`,`position`,`email`,`phone`)"
-				 + " values (?, ?, ?, ?, ?)";
+				 + " values (?, ?, ?, ?, ?, ?)";
 				 PreparedStatement preparedStmt = con.prepareStatement(query);
 				 // binding values
 				 preparedStmt.setInt(1, 0);
 				 preparedStmt.setString(2, no);
 				 preparedStmt.setString(3, name);
-				 preparedStmt.setString(2, position);
-				 preparedStmt.setString(4, email);
-				 preparedStmt.setInt(5, phone);
+				 preparedStmt.setString(4, position);
+				 preparedStmt.setString(5, email);
+				 preparedStmt.setInt(6, phone);
 				 // execute the statement
 				 preparedStmt.execute();
 				 con.close();
@@ -99,7 +99,7 @@ public class EmployeeDAO
 		 }
 	 return output;
  }
-public String updateItem(String ID,String no, String name, String position, String email, int phone)
+public String updateItem(String id,String no, String name, String position, String email, String phone)
  
   {
 		 String output = "";
@@ -109,15 +109,15 @@ public String updateItem(String ID,String no, String name, String position, Stri
 				 if (con == null)
 				 {return "Error while connecting to the database for updating."; }
 				 // create a prepared statement
-				 String query = "UPDATE employee SET itemCode=?,itemName=?,itemPrice=?,itemDesc=? WHERE itemID=?";
+				 String query = "UPDATE employee SET no=?,name=?,position=?,email=?,phone=? WHERE id=?";
 				 PreparedStatement preparedStmt = con.prepareStatement(query);
 				 // binding values
-				 preparedStmt.setString(2, no);
-				 preparedStmt.setString(3, name);
-				 preparedStmt.setString(2, position);
+				 preparedStmt.setString(1, no);
+				 preparedStmt.setString(2, name);
+				 preparedStmt.setString(3, position);
 				 preparedStmt.setString(4, email);
-				 preparedStmt.setInt(5, phone);
-				 preparedStmt.setInt(5, Integer.parseInt(ID));
+				 preparedStmt.setString(5, phone);
+				 preparedStmt.setInt(6, Integer.parseInt(id));
 				 // execute the statement
 				 preparedStmt.execute();
 				 con.close();
