@@ -2,17 +2,15 @@ package com.ElectroGridEG.electrogrideg.dao;
 
 import java.sql.*;
 
-import javax.sql.DataSource;
-
 import com.ElectroGridEG.electrogrideg.model.Employee;
-public class EmployeeDAO
+public class EmployeeDAO implements EmpDAO
 {    //A common method to connect to the DB
      private Connection connect()
    {
 		 Connection con = null;
 		 try
 		 {
-		 Class.forName("com.mysql.jdbc.Driver");
+		 Class.forName("com.mysql.cj.jdbc.Driver");
 		
 		 //Provide the correct details: DBServer/DBName, username, password
 		 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/electrogrid", "root", "");
@@ -160,4 +158,6 @@ public class EmployeeDAO
 			 }
 				 return output;
         }
+
+
 } 
