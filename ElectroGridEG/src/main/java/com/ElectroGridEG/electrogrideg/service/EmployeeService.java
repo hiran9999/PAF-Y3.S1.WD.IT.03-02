@@ -2,6 +2,7 @@ package com.ElectroGridEG.electrogrideg.service;
 
 
 import com.ElectroGridEG.electrogrideg.dao.EmployeeDAO;
+import com.ElectroGridEG.electrogrideg.model.Employee;
 //For REST Service
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -15,12 +16,13 @@ import org.jsoup.nodes.Document;
 public class EmployeeService
 {
 EmployeeDAO employeeObj = new EmployeeDAO();
+
 		@GET
 		@Path("/")
 		@Produces(MediaType.TEXT_HTML)
-		public String readItems()
+		public String readEmp()
    {
-        return employeeObj.readItems();
+        return employeeObj.readEmp();
    }
 
 
@@ -28,13 +30,15 @@ EmployeeDAO employeeObj = new EmployeeDAO();
 		@Path("/")
 		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String insertItem(@FormParam("no") String no,
-		 @FormParam("name") String name,
+		public String insertEmp(@FormParam("empNo") String empNo,
+		 @FormParam("empName") String empName,
 		 @FormParam("position") String position,
 		 @FormParam("email") String email,
 		 @FormParam("phone") int phone)
 	{	
-		 String output = employeeObj.insertItem(no, name, position, email,phone);
+			
+		Employee employee =  new Employee( empNo, empName, position, email, phone);
+		String output = employeeObj.insertEmp (employee);
 		return output;
     }  
 		
@@ -43,20 +47,37 @@ EmployeeDAO employeeObj = new EmployeeDAO();
 		@Path("/")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String updateItem(String employeeData)
+		public String updateEmp(String employeeData)
 		{
 		//Convert the input string to a JSON object
 		 JsonObject employeeObject = new JsonParser().parse(employeeData).getAsJsonObject();
 		//Read the values from the JSON object
-		 String Empid = employeeObject.get("id").getAsString();
-		 String Empno = employeeObject.get("no").getAsString();
-		 String Empname = employeeObject.get("name").getAsString();
+		 int id = employeeObject.get("id").getAsInt();
+		 String empNo = employeeObject.get("empNo").getAsString();
+		 String empName = employeeObject.get("empName").getAsString();
 		 String position = employeeObject.get("position").getAsString();
 		 String email = employeeObject.get("email").getAsString();
-		 String phone = employeeObject.get("phone").getAsString();
-		 
-		 String output = employeeObj.updateItem(Empid, Empno, Empname, position, email, phone);
+		 int phone = employeeObject.get("phone").getAsInt();
+		
+		 Employee employee =  new Employee( id, empNo, empName, position, email, phone);
+		 String output = employeeObj.updateEmp(employee);
+		 return output;
+	}
+		
+		@DELETE
+		@Path("/")
+		@Consumes(MediaType.APPLICATION_XML)
+		@Produces(MediaType.TEXT_PLAIN)
+		public String deleteEmp(String employeeData)
+		{
+		//Convert the input string to an XML document
+		 Document doc = Jsoup.parse(employeeData, "", Parser.xmlParser());
+
+		//Read the value from the element <itemID>
+		 String id = doc.select("id").text();
+		 String output = employeeObj.deleteEmp(id);
 		return output;
 		}
+
 
  }
